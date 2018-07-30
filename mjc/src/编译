@@ -1,0 +1,4 @@
+gcc -o main *.c -I ../include/ -L ../libs -lcJSON -lm
+ gcc -o main *.c -I ../include/ -L ../libs -lcJSON -lm -lpaho-mqtt3cs -g -lpthread
+gcc -o main *.c -I ../include/ -I ./ -L ../libs -lcJSON -lm -lpaho-mqtt3cs -g -lpthread
+

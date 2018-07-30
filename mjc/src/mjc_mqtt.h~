@@ -1,0 +1,98 @@
+/** 
+* @file         mjc_mqtt.h 
+* @brief        mjc交互模块mqtt部分偷吻间 
+* @details      定义了与mqtt相关的数据以及函数
+* @author       林展翔 
+* @version      V1.0 
+* @par History:          
+*  
+*/ 
+
+#ifndef _MJC_MQTT_H_
+#define _MJC_MQTT_H_
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "MQTTClient.h"
+
+/** MQTT协议链接相关数据宏定义 */
+#define ADDRESS "tcp://10.18.139.79:1883" //更改此处地址10.18.139.79
+#define CLIENTID "aaabbbccc_pub"       //更改此处客户端ID
+#define SUB_CLIENTID "aaabbbccc_sub"   //更改此处客户端ID
+#define TOPIC_PUB "server"          //更改发布的主题
+#define TOPIC_SUB "ZHKJ00000000F"          //更改订阅的主题
+#define QOS_SUB 0                      //订阅QOS
+#define QOS_PUB 2                      //发布QOS
+#define TIMEOUT 300L                 //超时时间
+#define USERNAME "test_user"           //用户名
+#define PASSWORD "jim777"              //密码
+
+/**
+ * mqtt订阅回调函数
+ * mjc_delivered mjc_connlost mjc_msgarrvd
+ */
+void mjc_delivered(void *context, MQTTClient_deliveryToken dt);
+void mjc_connlost(void *context, char *cause);
+int mjc_msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message);
+
+/** 
+ * 获取client. 
+ * 获取MQTT订阅的client. 
+ * @param[in]   NULL. 
+ * @param[out]  client指针.  
+ * @par 其它 
+ *      无 
+ * @par 修改日志 
+ *      林展翔于2018-07-22创建 
+ */
+void *mjc_get_client ();
+/** 
+ * mqtt部分消息发布. 
+ * 传入相应消息负载将消息发布到对应的主题 
+ * @param[in]   消息负载指证. 
+ * @param[out]  出错数据相应错误,未出错回参数0.  
+ * @par 其它 
+ *      无 
+ * @par 修改日志 
+ *      林展翔于2018-07-22创建 
+ */
+int mjc_mqtt_pub(char *payload);
+
+/** 
+ * mqtt部分消息订阅. 
+ * 线程入口函数,创建线程订阅相应主题 
+ * @param[in]   消息负载指证. 
+ * @param[out]  出错数据相应错误,未出错回参数0.  
+ * @par 其它 
+ *      无 
+ * @par 修改日志 
+ *      林展翔于2018-07-22创建 
+ */
+int mjc_mqtt_sub();
+
+/** 
+ * mqtt部分请求回复消息发布. 
+ * 传入相应消息负载将消息发布到对应的主题 
+ * @param[in]   消息负载指证. 
+ * @param[out]  出错数据相应错误,未出错回参数0.  
+ * @par 其它 
+ *      无 
+ * @par 修改日志 
+ *      林展翔于2018-07-22创建 
+ */
+int mjc_mqtt_resp_pub(char *payload);
+
+
+/** 
+ * mqtt订阅初始化函数. 
+ * 创建一个订阅相应主题的线程来监听对应主题 
+ * @param[in]   NULL. 
+ * @param[out]  出错数据相应错误,未出错回参数0.  
+ * @par 其它 
+ *      无 
+ * @par 修改日志 
+ *      林展翔于2018-07-22创建 
+ */
+int mjc_mqtt_sub_init();
+
+#endif
